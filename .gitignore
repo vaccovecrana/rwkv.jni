@@ -1,0 +1,10 @@
+.DS_Store
+.vscode/
+
+.idea/
+.gradle/
+build/
+bin/
+
+gradle/
+gradlew*
