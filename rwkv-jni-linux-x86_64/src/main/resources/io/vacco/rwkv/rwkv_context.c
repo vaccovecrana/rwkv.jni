@@ -1,6 +1,8 @@
 #include <jni.h>
 #include "rwkv.h"
 
+// Guess who wrote this stuff... https://youtu.be/G2SuBGH8ilQ
+
 JNIEXPORT jlong JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvInitFromFile(JNIEnv *env, jobject obj, jstring modelFilePath, jint numThreads) {
     const char *modelFilePathChars = (*env)->GetStringUTFChars(env, modelFilePath, 0);
     struct rwkv_context *ctx = rwkv_init_from_file(modelFilePathChars, (uint32_t) numThreads);
@@ -72,8 +74,19 @@ JNIEXPORT void JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvFree(JNIEnv *env, jobj
     rwkv_free((struct rwkv_context *) contextPtr);
 }
 
-JNIEXPORT jboolean JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvQuantizeModelFile(JNIEnv *env, jclass cls, jstring modelFilePathIn, jstring modelFilePathOut, jstring formatName) {
-    const char *modelFilePathInChars = (*env
+JNIEXPORT jboolean JNICALL Java_RWKVContext_rwkvQuantizeModelFile(JNIEnv *env, jclass cls, jstring modelFilePathIn, jstring modelFilePathOut, jstring formatName) {
+    const char *modelFilePathInChars = (*env)->GetStringUTFChars(env, modelFilePathIn, 0);
+    const char *modelFilePathOutChars = (*env)->GetStringUTFChars(env, modelFilePathOut, 0);
+    const char *formatNameChars = (*env)->GetStringUTFChars(env, formatName, 0);
+
+    jboolean result = rwkv_quantize_model_file(modelFilePathInChars, modelFilePathOutChars, formatNameChars);
+
+    (*env)->ReleaseStringUTFChars(env, modelFilePathIn, modelFilePathInChars);
+    (*env)->ReleaseStringUTFChars(env, modelFilePathOut, modelFilePathOutChars);
+    (*env)->ReleaseStringUTFChars(env, formatName, formatNameChars);
+
+    return result;
+}
 
 JNIEXPORT jstring JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvGetSystemInfoString(JNIEnv *env, jclass cls) {
     const char *systemInfoString = rwkv_get_system_info_string();
