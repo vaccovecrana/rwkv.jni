@@ -63,8 +63,6 @@ BUILD SUCCESSFUL in 1m 27s
 
 ## Notes
 
-You'll need to edit the test case with the location to a [Quantized RWKV model](https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main).
-
-I tested with `Q8_0-RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.bin`.
-
-At the moment, only amd64 Linux is supported with native dependencies. PRs for other platforms are welcome.
+- You'll need to edit the test case with the location to a [Quantized RWKV model](https://huggingface.co/BlinkDL/rwkv-4-raven/tree/main). I tested with `Q8_0-RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.bin`.
+- At the moment, only amd64 Linux is supported with native dependencies. PRs for other platforms are welcome.
+- Token encoding/decoding support is currently supported via `djl`'s [Huggingface tokenizers](https://djl.ai/extensions/tokenizers/) implementation (also via JNI).

@@ -31,7 +31,7 @@ public class RkTest {
         var modelFile = new File("/media/st_ext4/rwkv.cpp/rwkv/Q8_0-RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.bin");
         var rk = RkContext.init(modelFile, 4);
 
-        try (var tok = HuggingFaceTokenizer.newInstance(Paths.get("./src/test/resources/20B_tokenizer.json"))) {
+        try (var tok = HuggingFaceTokenizer.newInstance(Paths.get("./src/main/resources/20B_tokenizer.json"))) {
           var prompt = "Here's a short poem about dogs: ";
           var enc = tok.encode(prompt);
           for (var tid : enc.getIds()) {
