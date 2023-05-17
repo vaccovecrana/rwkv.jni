@@ -1,7 +1,7 @@
 package io.vacco;
 
 import ai.djl.huggingface.tokenizers.HuggingFaceTokenizer;
-import io.vacco.rwkv.RWKVContext;
+import io.vacco.rwkv.RkContext;
 import j8spec.annotation.DefinedOrder;
 import j8spec.junit.J8SpecRunner;
 import org.junit.runner.RunWith;
@@ -15,8 +15,8 @@ public class HfTokTest {
   static {
     it("lols", () -> {
 
-
-      var lol = RWKVContext.rwkvGetSystemInfoString();
+      RkContext.initLibRwkb();
+      var lol = RkContext.rwkvGetSystemInfoString();
 
       System.out.println(lol);
 
