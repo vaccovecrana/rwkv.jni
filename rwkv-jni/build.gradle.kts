@@ -4,9 +4,13 @@ configure<io.vacco.oss.gitflow.GsPluginProfileExtension> {
 
 val api by configurations
 
+var osn = System.getProperty("os.name").toLowerCase()
+var osa = System.getProperty("os.arch").toLowerCase()
+
 dependencies {
   api("ai.djl.huggingface:tokenizers:0.22.1")
-  testImplementation(project(":rwkv-jni-linux-x86_64"))
+  testImplementation(project(":rwkv-jni-${osn}-${osa}"))
+  testImplementation("io.vacco.shax:shax:1.7.30.0.0.7")
 }
 
 tasks.withType<Test> {

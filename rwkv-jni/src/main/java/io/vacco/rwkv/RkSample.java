@@ -78,18 +78,4 @@ public class RkSample {
     return sampleProbs(probs, temperature, topP, logitBias);
   }
 
-  public static void main(String[] args) {
-    float[] logits = {0.2f, 0.3f, 0.1f, 0.4f};
-    float temperature = 0.8f;
-    float topP = 0.5f;
-
-    var logitBias = new HashMap<Integer, Float>();
-    logitBias.put(0, 0.1f);
-    logitBias.put(2, 0.2f);
-
-    for (int i = 0; i < 16; i++) {
-      int sampledIndex = sampleLogits(logits, temperature, topP, null);
-      System.out.println("Sampled Index: " + sampledIndex);
-    }
-  }
 }

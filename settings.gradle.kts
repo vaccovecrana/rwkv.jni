@@ -5,4 +5,7 @@ pluginManagement {
   }
 }
 
-include("rwkv-jni-linux-x86_64", "rwkv-jni")
+var osn = System.getProperty("os.name").toLowerCase()
+var osa = System.getProperty("os.arch").toLowerCase()
+
+include("rwkv-jni-${osn}-${osa}", "rwkv-jni")

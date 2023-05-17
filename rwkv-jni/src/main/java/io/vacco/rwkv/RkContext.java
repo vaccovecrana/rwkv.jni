@@ -1,19 +1,24 @@
 package io.vacco.rwkv;
 
+import com.sun.jna.Platform;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.File;
 
 public class RkContext {
 
+  private static final Logger log = LoggerFactory.getLogger(RkContext.class);
+
   static {
-    // TODO fix this
-    var rkLib = new File("/home/jjzazuet/code/rwkv.jni/rwkv-jni-linux-x86_64/src/main/resources/io/vacco/rwkv/librwkv.so");
-    var jniLib = new File("/home/jjzazuet/code/rwkv.jni/rwkv-jni-linux-x86_64/src/main/resources/io/vacco/rwkv/librwkv_context.so");
-
-    System.out.println(rkLib.exists());
-    System.out.println(jniLib.exists());
-
-    System.load(rkLib.getAbsolutePath());
-    System.load(jniLib.getAbsolutePath());
+    var os = String.format("%s-%s", System.getProperty("os.name"), System.getProperty("os.arch"));
+    log.info("Loading native binaries for {}", os);
+    if (Platform.isLinux() && Platform.is64Bit()) {
+      RkNative.loadLibraryFromJar("/io/vacco/rwkv/librwkv.so");
+      RkNative.loadLibraryFromJar("/io/vacco/rwkv/librwkv_context.so");
+    } else {
+      var msg = String.format("No native binaries available for [%s]. PRs are welcome :)", os);
+      throw new UnsupportedOperationException(msg);
+    }
   }
 
   public static native long rwkvInitFromFile(String modelFilePath, int numThreads);
@@ -24,10 +29,11 @@ public class RkContext {
   public static native boolean rwkvQuantizeModelFile(String modelFilePathIn, String modelFilePathOut, String formatName);
   public static native String rwkvGetSystemInfoString();
 
-  public static Rk init(File modelPath, int numThreads) {
+  public static Rk init(File model, int numThreads) {
+    log.info("Initializing model [{}]", model.getAbsolutePath());
     var rk = new Rk();
-    rk.modelPath = modelPath.getAbsolutePath();
-    rk.ctxPtr = rwkvInitFromFile(modelPath.getAbsolutePath(), numThreads);
+    rk.modelPath = model.getAbsolutePath();
+    rk.ctxPtr = rwkvInitFromFile(model.getAbsolutePath(), numThreads);
     rk.state = new float[rwkvGetStateBufferElementCount(rk.ctxPtr)];
     rk.logits = new float[rwkvGetLogitsBufferElementCount(rk.ctxPtr)];
     return rk;
