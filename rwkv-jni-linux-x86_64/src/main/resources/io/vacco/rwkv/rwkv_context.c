@@ -3,14 +3,14 @@
 
 // Guess who wrote this stuff... https://youtu.be/G2SuBGH8ilQ
 
-JNIEXPORT jlong JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvInitFromFile(JNIEnv *env, jobject obj, jstring modelFilePath, jint numThreads) {
+JNIEXPORT jlong JNICALL Java_io_vacco_rwkv_RkContext_rwkvInitFromFile(JNIEnv *env, jobject obj, jstring modelFilePath, jint numThreads) {
     const char *modelFilePathChars = (*env)->GetStringUTFChars(env, modelFilePath, 0);
     struct rwkv_context *ctx = rwkv_init_from_file(modelFilePathChars, (uint32_t) numThreads);
     (*env)->ReleaseStringUTFChars(env, modelFilePath, modelFilePathChars);
     return (jlong) ctx;
 }
 
-JNIEXPORT jboolean JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvEval(JNIEnv *env, jobject obj, jlong contextPtr, jint token, jfloatArray stateIn, jfloatArray stateOut, jfloatArray logitsOut) {
+JNIEXPORT jboolean JNICALL Java_io_vacco_rwkv_RkContext_rwkvEval(JNIEnv *env, jobject obj, jlong contextPtr, jint token, jfloatArray stateIn, jfloatArray stateOut, jfloatArray logitsOut) {
     float *stateInPtr = NULL;
     float *stateOutPtr = NULL;
     float *logitsOutPtr = NULL;
@@ -62,15 +62,15 @@ JNIEXPORT jboolean JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvEval(JNIEnv *env, 
     return result;
 }
 
-JNIEXPORT jint JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvGetStateBufferElementCount(JNIEnv *env, jobject obj, jlong contextPtr) {
+JNIEXPORT jint JNICALL Java_io_vacco_rwkv_RkContext_rwkvGetStateBufferElementCount(JNIEnv *env, jobject obj, jlong contextPtr) {
     return (jint) rwkv_get_state_buffer_element_count((struct rwkv_context *) contextPtr);
 }
 
-JNIEXPORT jint JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvGetLogitsBufferElementCount(JNIEnv *env, jobject obj, jlong contextPtr) {
+JNIEXPORT jint JNICALL Java_io_vacco_rwkv_RkContext_rwkvGetLogitsBufferElementCount(JNIEnv *env, jobject obj, jlong contextPtr) {
     return (jint) rwkv_get_logits_buffer_element_count((struct rwkv_context *) contextPtr);
 }
 
-JNIEXPORT void JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvFree(JNIEnv *env, jobject obj, jlong contextPtr) {
+JNIEXPORT void JNICALL Java_io_vacco_rwkv_RkContext_rwkvFree(JNIEnv *env, jobject obj, jlong contextPtr) {
     rwkv_free((struct rwkv_context *) contextPtr);
 }
 
@@ -88,7 +88,7 @@ JNIEXPORT jboolean JNICALL Java_RWKVContext_rwkvQuantizeModelFile(JNIEnv *env, j
     return result;
 }
 
-JNIEXPORT jstring JNICALL Java_io_vacco_rwkv_RWKVContext_rwkvGetSystemInfoString(JNIEnv *env, jclass cls) {
+JNIEXPORT jstring JNICALL Java_io_vacco_rwkv_RkContext_rwkvGetSystemInfoString(JNIEnv *env, jclass cls) {
     const char *systemInfoString = rwkv_get_system_info_string();
     jstring result = (*env)->NewStringUTF(env, systemInfoString);
     return result;

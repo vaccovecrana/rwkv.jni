@@ -4,7 +4,7 @@ import java.io.File;
 
 public class RkContext {
 
-  public static void initLibRwkb() {
+  static {
     // TODO fix this
     var rkLib = new File("/home/jjzazuet/code/rwkv.jni/rwkv-jni-linux-x86_64/src/main/resources/io/vacco/rwkv/librwkv.so");
     var jniLib = new File("/home/jjzazuet/code/rwkv.jni/rwkv-jni-linux-x86_64/src/main/resources/io/vacco/rwkv/librwkv_context.so");
@@ -14,7 +14,6 @@ public class RkContext {
 
     System.load(rkLib.getAbsolutePath());
     System.load(jniLib.getAbsolutePath());
-    System.out.println("lel");
   }
 
   public static native long rwkvInitFromFile(String modelFilePath, int numThreads);
