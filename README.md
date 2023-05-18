@@ -7,6 +7,13 @@ for quantized [RWKV](https://github.com/BlinkDL/RWKV-LM) models without having t
 
 Available in [Maven Central](https://mvnrepository.com/artifact/io.vacco.rwkv).
 
+```
+implementation("io.vacco.rwkv:rwkv-jni:1c363e6")
+implementation("io.vacco.rwkv:rwkv-jni-linux-amd64:1c363e6")
+```
+
+> Note: versions are aligned with [rwkv.cpp releases](https://github.com/saharNooby/rwkv.cpp/releases)
+
 See test case for usage example.
 
 [RkTest](./rwkv-jni/src/test/java/io/vacco/RkTest.java)
