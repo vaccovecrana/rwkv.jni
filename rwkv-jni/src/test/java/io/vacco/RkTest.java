@@ -11,6 +11,7 @@ import java.awt.*;
 import java.io.File;
 import java.nio.file.Paths;
 
+import static io.vacco.rwkv.RkPrompts.*;
 import static j8spec.J8Spec.*;
 
 @DefinedOrder
@@ -28,11 +29,14 @@ public class RkTest {
       if (!GraphicsEnvironment.isHeadless()) {
         log.info(RkContext.rwkvGetSystemInfoString());
 
-        var modelFile = new File("/media/st_ext4/rwkv.cpp/rwkv/Q8_0-RWKV-4-Raven-7B-v11x-Eng99%-Other1%-20230429-ctx8192.bin");
+        var modelFile = new File("/media/st_ext4/rwkv.cpp/rwkv/RWKV-4-Raven-3B-v9.bin");
         var rk = RkContext.init(modelFile, 4);
 
         try (var tok = HuggingFaceTokenizer.newInstance(Paths.get("./src/main/resources/20B_tokenizer.json"))) {
-          var prompt = "Here's a short poem about dogs: ";
+          var prompt = generatePrompt(
+            "which animals did I see at the National Zoo?",
+            "Yesterday, my family and I went to the National Zoo and Aquarium to visit the new Snow Cubs and the other animals."
+          );
           var enc = tok.encode(prompt);
           for (var tid : enc.getIds()) {
             RkContext.rwkvEval(rk.ctxPtr, (int) tid, rk.state, rk.state, rk.logits);
